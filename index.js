@@ -41,6 +41,25 @@ app.post('/addservices', (req, res) => {
     });
 })
 
+app.get('/getservices', (req, res) => {
+
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctor-portal").collection("services");
+    collection.find().toArray((err, documents) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+            
+        }
+        else{
+            res.send(documents)
+        }
+    })
+    client.close();
+    });
+})
+
 app.post('/addappointment', (req, res) => {
     const appointment = req.body
     appointment.appointmentTime = new Date()
@@ -64,11 +83,11 @@ app.post('/addappointment', (req, res) => {
 })
 
 
-app.get('/getservices', (req, res) => {
+app.get('/getappointment', (req, res) => {
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
-    const collection = client.db("doctor-portal").collection("services");
+    const collection = client.db("doctor-portal").collection("appointments");
     collection.find().toArray((err, documents) => {
         if(err){
             console.log(err);
