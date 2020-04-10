@@ -41,6 +41,28 @@ app.post('/addservices', (req, res) => {
     });
 })
 
+app.post('/addappointment', (req, res) => {
+    const appointment = req.body
+    appointment.appointmentTime = new Date()
+    console.log(appointment)
+
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctor-portal").collection("appointments");
+    collection.insertOne(appointment, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+            
+        }
+        else{
+            res.send(result.ops[0])
+        }
+    })
+    client.close();
+    });
+})
+
 
 app.get('/getservices', (req, res) => {
 
