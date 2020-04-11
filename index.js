@@ -83,16 +83,15 @@ app.post('/addappointment', (req, res) => {
 })
 
 
-app.get('/getappointment', (req, res) => {
-
+app.post('/getappointments', (req, res) => {
+    const query = req.body
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("appointments");
-    collection.find().toArray((err, documents) => {
+    collection.find(query).toArray((err, documents) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
-            
         }
         else{
             res.send(documents)
