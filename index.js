@@ -118,4 +118,44 @@ app.get('/getallappointments', (req, res) => {
     });
 })
 
+
+app.post('/addpatients', (req, res) => {
+    const items = req.body
+    console.log(items)
+
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctor-portal").collection("patients");
+    collection.insert(items, (err, result) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+            
+        }
+        else{
+            res.send(result.ops[0])
+        }
+    })
+    client.close();
+    });
+})
+
+
+app.get('/getpatients', (req, res) => {
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctor-portal").collection("patients");
+    collection.find().toArray((err, documents) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+        }
+        else{
+            res.send(documents)
+        }
+    })
+    client.close();
+    });
+})
+
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
