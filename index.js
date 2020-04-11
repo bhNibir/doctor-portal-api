@@ -101,4 +101,21 @@ app.post('/getappointments', (req, res) => {
     });
 })
 
+app.get('/getallappointments', (req, res) => {
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+    const collection = client.db("doctor-portal").collection("appointments");
+    collection.find().toArray((err, documents) => {
+        if(err){
+            console.log(err);
+            res.status(500).send({message:err})
+        }
+        else{
+            res.send(documents)
+        }
+    })
+    client.close();
+    });
+})
+
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
