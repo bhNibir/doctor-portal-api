@@ -62,7 +62,6 @@ app.get('/getservices', (req, res) => {
 app.post('/addappointment', (req, res) => {
     const appointment = req.body
     appointment.appointmentTime = new Date()
-    console.log(appointment)
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
@@ -120,7 +119,7 @@ app.get('/getallappointments', (req, res) => {
 
 app.post('/addpatients', (req, res) => {
     const items = req.body
-    console.log(items)
+    
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
@@ -158,8 +157,7 @@ app.get('/getpatients', (req, res) => {
 })
 
 app.post('/addprescriptions', (req, res) => {
-    const items = req.body
-    console.log(items)
+    const items = req.body 
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
@@ -179,11 +177,12 @@ app.post('/addprescriptions', (req, res) => {
 })
 
 
-app.get('/getprescriptions', (req, res) => {
+app.post('/getprescriptions', (req, res) => {
+    const query = req.body
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("prescriptions");
-    collection.find().toArray((err, documents) => {
+    collection.find(query).toArray((err, documents) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
