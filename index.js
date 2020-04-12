@@ -22,7 +22,6 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.post('/addservices', (req, res) => {
     const items = req.body
-    console.log(items)
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
