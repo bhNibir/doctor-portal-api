@@ -82,11 +82,11 @@ app.post('/addappointment', (req, res) => {
 
 
 app.post('/getappointments', (req, res) => {
-    const query = req.body
+    const queryByDate = req.body
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("appointments");
-    collection.find(query).toArray((err, documents) => {
+    collection.find(queryByDate).toArray((err, documents) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
@@ -118,13 +118,13 @@ app.get('/getallappointments', (req, res) => {
 
 
 app.post('/addpatients', (req, res) => {
-    const items = req.body
+    const patientsInfo = req.body
     
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("patients");
-    collection.insert(items, (err, result) => {
+    collection.insert(patientsInfo, (err, result) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
@@ -157,12 +157,12 @@ app.get('/getpatients', (req, res) => {
 })
 
 app.post('/addprescriptions', (req, res) => {
-    const items = req.body 
+    const prescriptionInfo = req.body 
 
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("prescriptions");
-    collection.insert(items, (err, result) => {
+    collection.insert(prescriptionInfo, (err, result) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
@@ -178,11 +178,11 @@ app.post('/addprescriptions', (req, res) => {
 
 
 app.post('/getprescriptions', (req, res) => {
-    const query = req.body
+    const queryPatientID = req.body
     client = new MongoClient(uri, { useNewUrlParser: true });
     client.connect(err => {
     const collection = client.db("doctor-portal").collection("prescriptions");
-    collection.find(query).toArray((err, documents) => {
+    collection.find(queryPatientID).toArray((err, documents) => {
         if(err){
             console.log(err);
             res.status(500).send({message:err})
